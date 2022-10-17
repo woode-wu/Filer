@@ -13,8 +13,7 @@
 
 # 解锁网易云灰色音乐，获取证书链接; https://raw.githubusercontents.com/nondanee/UnblockNeteaseMusic/master/ca.crt
 
-# 利用描述文件屏蔽IOS更新提醒
-; https://app.initnil.com/tvOS.mobileconfig
+# 利用描述文件屏蔽IOS更新提醒; https://app.initnil.com/tvOS.mobileconfig
 
 
 
