@@ -1,5 +1,20 @@
-# 自用 QuantumultX 懒人配置 1.0.0 测试版# “;” “#” 为注释符号，去掉前面的符号，该行才会生效# 第一次使用本配置，建议先备份自己之前的配置，以防后悔# 本配置不定时更新，当前更新时间：2022.9.10
+# 自用 Quantumult X  1.0起始测试版  懒人配置 
 
-https://raw.githubusercontents.com/chxm1023/QX/main/chxm1023.conf
+# “;” “#”为注释符号，去掉前面的符号，该行才会生效
 
-[一般]dns_exclusion_list=*.cmpassport.com, *.jegotrip.com.cn, *.icitymobile.mobi, id6.me, *.pingan.com.cngeo_location_checker=http://ip-api.com/json/?lang=zh-CN，https://raw.githubusercontent.com/Orz-3/Orz-3/master/QuantumultX/IP.jsresource_parser_url= https://raw.githubusercontent.com/KOP-XIAO/QuantumultX/master/Scripts/resource-parser.jsprofile_img_url= https://raw.githubusercontent.com/Orz-3/mini/master/Color/Personal.pngserver_check_url=http://www.gstatic.com/generate_204#第一filter为4g模式开启规则分流，第二个filter为其他wifi下开启规则分流，第三个wifi1修改成你路由器翻墙的wifi名开启直连模式，第四个wifi2你公司或其他有路由器翻墙的WiFi名走直连）#默认关闭根据wifi切换模式，如需开启，删除下方的“#”即可！#running_mode_trigger=filter, filter, wifi1:all_direct, wifi2: all_direct
+# 第一次使用本配置，建议先备份自己之前的配置，以防后悔
+
+# 当前更新时间：2022.10.16
+
+
+
+
+# 建议在Quantumlt X「其他设置」里「GeoLite2」的「来源」填写使用下面链接，并开启「自动更新」用来更新大佬的分流策略; https://raw.githubusercontents.com/Loyalsoldier/geoip/release/Country.mmdb
+
+# 解锁网易云灰色音乐，获取证书链接; https://raw.githubusercontents.com/nondanee/UnblockNeteaseMusic/master/ca.crt
+
+# 利用描述文件屏蔽IOS更新提醒
+; https://app.initnil.com/tvOS.mobileconfig
+
+
+
