@@ -57,4 +57,194 @@ address=/mtalk.google.com/108.177.125.188
 ;address=/example5.com/192.168.16.18
 ;address=/example6.com/[2001:8d3:8d3:8d3:8d3:8d3:8d3:8d3]
 
+[policy]
+# 其中港台番剧策略组对应的分流规则默认处于关闭状态，如需使用请在 分流-引用 中开启。
+url-latency-benchmark=优选节点, server-tag-regex=^(?!.*网易云), check-interval=1200, tolerance=0, img-url=https://qxnav.com/rules/QuantumultX/img/Urltest.png
+static=自选节点, 优选节点, proxy, server-tag-regex=^(?!.*网易云), img-url=https://qxnav.com/rules/QuantumultX/img/Static.png
+static=海外服务, 自选节点, img-url=https://qxnav.com/rules/QuantumultX/img/Global.png
+static=地理位置, 大陆服务, 自选节点, img-url=https://qxnav.com/rules/QuantumultX/img/localtion.png
+static=网易云音乐, server-tag-regex=(?=.*(网易云|(?i)netease))^((?!(台|日|韩|港|新|美)).)*$, img-url=https://qxnav.com/rules/QuantumultX/img/Netease.png
+static=大陆服务, direct, 自选节点, img-url=https://qxnav.com/rules/QuantumultX/img/China.png
+static=广告屏蔽, reject, img-url=https://qxnav.com/rules/QuantumultX/img/Adblock.png
+static=港台番剧, 大陆服务, 自选节点, img-url=https://qxnav.com/rules/QuantumultX/img/StreamingSE.png
+
+#如果需要分地区节点使用，去掉下面相关地区前面的 # 即可
+#url-latency-benchmark=香港, server-tag-regex=(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|美)).)*$, check-interval=600, tolerance=0, img-url=https://qxnav.com/rules/QuantumultX/img/HK.png
+#url-latency-benchmark=台湾, server-tag-regex=(?=.*(台|TW|(?i)Taiwan))^((?!(港|日|韩|新|美)).)*$, check-interval=600, tolerance=0, img-url=https://qxnav.com/rules/QuantumultX/img/TW.png
+#url-latency-benchmark=日本, server-tag-regex=(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$, check-interval=600, tolerance=0, img-url=https://qxnav.com/rules/QuantumultX/img/JP.png
+#url-latency-benchmark=美国, server-tag-regex=(?=.*(美|US|(?i)States|American))^((?!(港|台|日|韩|新)).)*$, check-interval=600, tolerance=0, img-url=https://qxnav.com/rules/QuantumultX/img/US.png
+
+[server_local]
+
+#网易云解锁灰色音乐，使用 Safari 浏览器访问网站。首先下载 证书 (https://qxnav.com/rules/QuantumultX/CA/wyy_ca.crt)，进入「设置」>「通用」>「描述文件」，安装「UnblockNeteaseMusic Root CA」，并在「设置」>「通用」>「关于本机」>「证书信任设置」开启对「UnblockNeteaseMusic Root CA」的信任。
+#证书下载地址：https://qxnav.com/rules/QuantumultX/CA/wyy_ca.crt
+
+
+[server_remote]
+# 节点远程订阅，自行添加
+
+
+#解锁网易云灰色音乐原订阅地址：https://git.io/JfNq3
+https://qxnav.com/rules/QuantumultX/gz/wyy.list, tag=网易云解锁灰色, img-url=https://qxnav.com/rules/QuantumultX/img/Netease_Music.png, update-interval=86400, opt-parser=true, enabled=true
+
+[filter_local]
+
+# 本地分流规则(相同规则下，本地规则将覆盖远程规则，优先生效)
+
+
+# 避免迅雷版权问题
+host, hub5idx.v6.shub.sandai.net, reject
+host, hub5emu.v6.shub.sandai.net, reject
+host, hub5btmain.v6.shub.sandai.net, reject
+
+# 其他
+host-suffix, local, direct
+host-keyword, merlinblog, proxy
+ip-cidr, 10.0.0.0/8, direct
+ip-cidr, 17.0.0.0/8, direct
+ip-cidr, 100.64.0.0/10, direct
+ip-cidr, 127.0.0.0/8, direct
+ip-cidr, 172.16.0.0/12, direct
+ip-cidr, 192.168.0.0/16, direct
+geoip, cn, 大陆服务
+final, 大陆服务
+
+# Netease Music Advertising
+host,admusicpic.music.126.net,reject
+host,iadmat.nosdn.127.net,reject
+host,iadmusicmat.music.126.net,reject
+host,iadmusicmatvideo.music.126.net,reject
+
+#广告域名
+host,qzs.qq.com,reject
+host, gateway.icloud.com.cn, direct
+host, bag.itunes.apple.com, direct
+
+# 绕过企业证书过期
+host, ocsp.apple.com, reject
+
+# Local Area Network 局域网
+host-suffix, local, direct
+ip-cidr, 10.0.0.0/8, direct
+ip-cidr, 127.0.0.0/8, direct
+ip-cidr, 172.16.0.0/12, direct
+ip-cidr, 192.168.0.0/16, direct
+ip-cidr, 224.0.0.0/24, direct
+
+# GeoIP China
+geoip, cn, direct
+
+#Final：不在规则中的剩余请求，按照自己的需求选择direct(直连)或节点选择(Proxy)
+final, 黑白名单
+
+[filter_remote]
+
+#远程分流规则订阅
+
+# 超过4万条广告规则, 阻止常见的APP广告/隐私/行为/数据/流量/劫持的统计和追踪
+https://raw.githubusercontent.com/NobyDa/ND-AD/master/QuantumultX/AD_Block.txt, tag=AD_Block（4万条去广告规则）, force-policy=广告拦截, update-interval=86400, opt-parser=true, enabled=true
+
+# 超过6万条国内外广告规则, 可以与"AD_Block.txt"一起使用, 注: 可能有一些误杀, 请谨慎使用
+https://raw.githubusercontent.com/NobyDa/ND-AD/master/QuantumultX/AD_Block_Plus.txt, tag=AD_Block_plus（6万条去广告规则）, force-policy=广告拦截, update-interval=86400, opt-parser=true, enabled=true
+
+#广告屏蔽
+https://qxnav.com/rules/QuantumultX/gz/advertising.list, tag=广告屏蔽, update-interval=86400, opt-parser=false, enabled=true
+
+# 隐私保护
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/Guard/Privacy.list, tag=隐私保护, force-policy=广告拦截, update-interval=86400, opt-parser=false, enabled=true
+
+# 运营商劫持或恶意网站
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/Guard/Hijacking.list, tag=运营商劫持, force-policy=广告拦截, update-interval=86400, opt-parser=false, enabled=true
+
+# 规则修正，无需设置策略偏好，保持启用即可
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/Unbreak.list, tag=规则修正, update-interval=86400, opt-parser=true, enabled=true
+
+# BiliBili规则
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/BiliBili/BiliBili.list, tag=Bilibili, force-policy=BiliBili, update-interval=172800, opt-parser=false, enabled=true
+
+# Apple规则
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/Apple/Apple.list, tag=Apple 规则, force-policy=Apple, update-interval=86400, opt-parser=false, 
+
+# Telegram规则
+https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/Telegram/Telegram.list, tag=Telegram 规则, force-policy=Telegram, update-interval=86400, opt-parser=false, enabled=true
+
+# 国外视频
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/StreamingMedia/Streaming.list, tag=国际视频, force-policy=节点选择, update-interval=86400, opt-parser=true, enabled=true
+
+# 国外网站
+https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Filter/Global.list, tag=国外网站, force-policy=节点选择, update-interval=86400, opt-parser=true, enabled=true
+
+
+[rewrite_local]
+#本地复写/重写规则添加在这
+
+
+[rewrite_remote]
+
+# rewrite 复写远程订阅
+
+https://qxnav.com/rules/QuantumultX/gz/qxrules.conf, tag=奇心规则合集, update-interval=172800, opt-parser=true, enabled=true
+
+https://qxnav.com/rules/QuantumultX/gz/bilibili.conf, tag=哔哩哔哩, update-interval=172800, opt-parser=true, enabled=true
+
+https://raw.githubusercontent.com/zwf234/rules/master/QuantumultX/price.conf, tag=比价, update-interval=172800, opt-parser=true, enabled=true
+
+https://raw.githubusercontent.com/zwf234/rules/master/QuantumultX/tailadv.conf, tag=去开屏广告, update-interval=86400, opt-parser=true, enabled=true
+
+https://raw.githubusercontent.com/zwf234/rules/master/TikTok/US.conf, tag=解锁TikTok（更改后缀换区）, update-interval=86400, opt-parser=true, enabled=false
+
+https://qxnav.com/rules/QuantumultX/gz/getCookie1.conf, tag=获取Cookie1（获取完就禁用）, update-interval=86400, opt-parser=false, enabled=false
+
+https://qxnav.com/rules/QuantumultX/gz/getCookie.conf, tag=获取Cookie（获取完就禁用）, update-interval=86400, opt-parser=true, enabled=true
+
+https://raw.githubusercontent.com/chavyleung/scripts/master/box/rewrite/boxjs.rewrite.quanx.conf, tag=BoxJs, update-interval=86400, opt-parser=true, enabled=true
+
+https://raw.githubusercontents.com/DivineEngine/Profiles/master/Quantumult/Rewrite/Block/Advertising.conf, tag=神机去广告, update-interval=86400, opt-parser=true, enabled=true
+
+https://raw.githubusercontents.com/DivineEngine/Profiles/master/Quantumult/Rewrite/Block/Advertising.conf, tag=神机去广告, update-interval=86400, opt-parser=true, enabled=true
+https://raw.githubusercontents.com/DivineEngine/Profiles/master/Quantumult/Rewrite/General.conf, tag=神机重定向, update-interval=86400, opt-parser=true, enabled=true
+
+https://raw.githubusercontents.com/DivineEngine/Profiles/master/Quantumult/Rewrite/Block/AdvertisingPlus.conf, tag=神机去广告Plus, update-interval=86400, opt-parser=true, enabled=true
+
+https://raw.githubusercontents.com/DivineEngine/Profiles/master/Quantumult/Rewrite/Block/YouTubeAds.conf, tag=YouTube去广告, update-interval=86400, opt-parser=true, enabled=true
+
+https://raw.githubusercontents.com/app2smile/rules/master/module/baidu-no-redirect.sgmodule, tag=优化百度跳转, update-interval=172800, opt-parser=true, enabled=true
+
+https://raw.githubusercontents.com/elecV2/QuantumultX-Tools/master/betterweb/csdn.conf, tag=csdn浏览优化, update-interval=172800, opt-parser=false, enabled=true
+
+
+#Task远程订阅  https://raw.githubusercontent.com/zwf234/rules/master/qixin.json
+#添加方法：打开构造请求，最上方第一个按钮，右上角+号添加即可
+[task_local]
+
+#event-interaction https://raw.githubusercontent.com/I-am-R-E/QuantumultX/main/TaskLocal/NeteaseMusicUnlockCheck.js, tag=网易音乐查询, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Netease_Music_Unlock.png, enabled=true
+
+#0 8-22/3 * * * https://raw.githubusercontent.com/Peng-YM/QuanX/master/Tasks/nCov.js, tag=疫情动态, img-url=https://qxnav.com/rules/QuantumultX/img/COVID-19.png, enabled=true
+#event-interaction https://raw.githubusercontent.com/KOP-XIAO/QuantumultX/master/Scripts/geo_location.js, tag=GeoIP 查询, img-url=location.fill.viewfinder.system, enabled=true
+#event-interaction https://raw.githubusercontent.com/KOP-XIAO/QuantumultX/master/Scripts/streaming-ui-check.js, tag=流媒体-解锁查询, img-url=checkmark.seal.system, enabled=true
+#event-interaction https://raw.githubusercontent.com/KOP-XIAO/QuantumultX/master/Scripts/nf_ytb_ui-check.js, tag=YouTube/Netflix 解锁查询, img-url=checkmark.seal.system, enabled=true
+
+#3 0 * * * https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js, tag=京东多合一, img-url=https://qxnav.com/rules/QuantumultX/img/jd.png, enabled=true
+2 9 * * * https://qxnav.com/rules/QuantumultX/js/jd_bean_change.js, tag=京豆变动通知, img-url=https://qxnav.com/rules/QuantumultX/img/jd.png, enabled=true
+
+[http_backend] 
+# Boxjs设置，改为使用http backend方式，访问地址改为http://127.0.0.1:9999，更新配置后请长按风车-更新，然后重启代理
+https://raw.githubusercontent.com/chavyleung/scripts/master/box/chavy.boxjs.js, tag=BoxJs, path=^/, img-url=https://qxnav.com/rules/QuantumultX/img/box.png, enabled=false
+
+[mitm]
+//本地域名填写这里
+
+hostname = 
+
+;skip_validating_cert = false
+;force_sni_domain_name = false
+;empty_sni_enabled = false
+skip_validating_cert = false
+force_sni_domain_name = false
+hostname = sub.store, -*.amemv.com, -*.snssdk.com
+simple_cert_hostname=sub.store
+
+passphrase = 6EE87080
+p12 = 
+
 
